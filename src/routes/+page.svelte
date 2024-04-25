@@ -1,5 +1,6 @@
 <script lang="ts">
-	import raspberrypi2 from '$lib/assets/raspberrypi2.png';
+	// import raspberrypi2 from '$lib/assets/raspberrypi2.png';
+	import raspberrypi from '$lib/assets/raspberrypi.png';
 	import Icon from '@iconify/svelte';
 </script>
 
@@ -33,14 +34,15 @@
 	</div>
 
 	<div class="flex w-full">
+		<img src={raspberrypi} alt="Raspberry Pi" class="w-full" />
+	</div>
+
+	<!-- <div class="flex w-full">
 		<img
-			src="https://cdn3.botland.store/121185/raspberry-pi-5-4gb-.jpg"
+			src={raspberrypi2}
 			alt="Raspberry Pi"
 			class="w-full"
 		/>
-	</div>
-
-	<div class="flex w-full">
-		<img src={raspberrypi2} alt="Raspberry Pi" class="w-full" />
-	</div>
+		</div>
+	 -->
 </div>
