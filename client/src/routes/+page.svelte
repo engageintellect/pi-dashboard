@@ -19,6 +19,7 @@
 
 	type EndpointKey =
 		| 'hostname'
+		| 'os'
 		| 'uptime'
 		| 'memoryUsed'
 		| 'memoryAvailable'
@@ -33,6 +34,7 @@
 
 	const endpoints: Record<EndpointKey, string> = {
 		hostname: '/api/pi/hostname',
+		os: '/api/pi/os',
 		uptime: '/api/pi/uptime',
 		memoryUsed: '/api/pi/memory/used',
 		memoryAvailable: '/api/pi/memory/available',
@@ -48,6 +50,7 @@
 
 	let piData: Record<EndpointKey, any> = {
 		hostname: null,
+		os: null,
 		uptime: null,
 		memoryUsed: null,
 		memoryAvailable: null,
@@ -112,92 +115,93 @@
 	});
 </script>
 
-<div class="mx-auto h-screen w-full max-w-2xl p-4">
-	<div class="mx-auto flex max-w-md flex-col items-center gap-5">
-		<div class="text-9xl">pi</div>
-		<div>
-			read the <a class="text-blue-500 underline" href={PUBLIC_GITHUB_URL}>docs</a> for more info.
-		</div>
-		<div class="mx-auto my-5 flex w-full gap-2">
-			<a
-				href="/"
-				class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
-			>
-				<div>home</div>
-				<Icon icon="mdi:home" class="h-7 w-7" />
-			</a>
-			<a
-				href={PUBLIC_POCKETBASE_URL}
-				class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
-			>
-				<div>db</div>
-				<Icon icon="simple-icons:pocketbase" class="h-7 w-7" />
-			</a>
-			<a
-				href={PUBLIC_API_URL}
-				class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
-			>
-				<div>api</div>
-				<Icon icon="mynaui:api" class="h-7 w-7" />
-			</a>
-		</div>
-	</div>
-
-	<div class="relative">
-		<img src={raspberrypi} alt="raspberrypi" class="w-full drop-shadow-lg" />
-
-		{#if piData?.networkPorts !== null}
-			<div
-				in:fade={{ duration: 500 }}
-				class="absolute left-[8.5%] top-[13.25%] flex h-[21.5%] w-[11%] items-center justify-center overflow-auto rounded bg-gradient-to-b from-neutral-500 to-stone-400 p-2 text-sm text-white shadow"
-			>
-				<!-- {piData.networkPorts} -->
-				<div
-					class="flex h-full w-full scale-75 flex-col items-start text-xs sm:scale-100 sm:text-sm"
+<div class="flex flex-col">
+	<div class="mx-auto h-full min-h-screen w-full max-w-2xl p-4">
+		<div class="mx-auto flex max-w-md flex-col items-center gap-5">
+			<div class="text-9xl">pi</div>
+			<div>
+				read the <a class="text-blue-500 underline" href={PUBLIC_GITHUB_URL}>docs</a> for more info.
+			</div>
+			<div class="mx-auto my-5 flex w-full gap-2">
+				<a
+					href="/"
+					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
-					{#each piData.networkPorts as port}
-						<div class="drop-shadow">
-							{port}
-						</div>
-					{/each}
-				</div>
+					<div>home</div>
+					<Icon icon="mdi:home" class="h-7 w-7" />
+				</a>
+				<a
+					href={PUBLIC_POCKETBASE_URL}
+					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
+				>
+					<div>db</div>
+					<Icon icon="simple-icons:pocketbase" class="h-7 w-7" />
+				</a>
+				<a
+					href={PUBLIC_API_URL}
+					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
+				>
+					<div>api</div>
+					<Icon icon="mynaui:api" class="h-7 w-7" />
+				</a>
 			</div>
-		{/if}
-		{#if piData?.memoryUsed !== null}
-			<div
-				in:fade={{ duration: 500 }}
-				class="absolute left-[29.75%] top-[21%] flex h-[17%] w-[15%] items-center justify-center rounded bg-zinc-800 p-2 text-white"
-			>
-				<div class="text-xs sm:text-xl">
-					{piData.memoryUsed}%
-				</div>
-			</div>
-		{/if}
-		{#if piData?.cpuUsage !== null}
-			<div
-				in:fade={{ duration: 500 }}
-				class="absolute bottom-[28%] left-[28%] flex h-[28%] w-[18.25%] items-center justify-center rounded bg-stone-300 p-2 sm:text-base"
-			>
-				<div class="text-sm sm:text-lg md:text-xl">
-					{piData.cpuUsage}%
-				</div>
-			</div>
-		{/if}
-		{#if piData?.diskUsage !== null}
-			<div
-				in:fade={{ duration: 500 }}
-				class="absolute right-[28.25%] top-[26.75%] flex h-[20%] w-[13%] items-center justify-center rounded bg-zinc-800 p-2 text-white"
-			>
-				<div class="scale-75 text-xs sm:scale-100 sm:text-base">
-					{piData.diskUsage}%
-				</div>
-			</div>
-		{/if}
-	</div>
+		</div>
 
-	<!-- {#if stuff} -->
+		<div class="relative">
+			<img src={raspberrypi} alt="raspberrypi" class="w-full drop-shadow-lg" />
 
-	<!-- <div class="mx-auto my-5 max-w-md">
+			{#if piData?.networkPorts !== null}
+				<div
+					in:fade={{ duration: 500 }}
+					class="absolute left-[8.5%] top-[13.25%] flex h-[21.5%] w-[11%] items-center justify-center overflow-auto rounded bg-gradient-to-b from-neutral-500/50 to-stone-400 p-2 text-sm text-white shadow"
+				>
+					<!-- {piData.networkPorts} -->
+					<div
+						class="flex h-full w-full scale-75 flex-col items-start text-xs sm:scale-100 sm:text-sm"
+					>
+						{#each piData.networkPorts as port}
+							<div class="drop-shadow">
+								{port}
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
+			{#if piData?.memoryUsed !== null}
+				<div
+					in:fade={{ duration: 500 }}
+					class="absolute left-[29.75%] top-[21%] flex h-[17%] w-[15%] items-center justify-center rounded bg-zinc-800/50 p-2 text-white"
+				>
+					<div class="text-xs sm:text-xl">
+						{piData.memoryUsed}%
+					</div>
+				</div>
+			{/if}
+			{#if piData?.cpuUsage !== null}
+				<div
+					in:fade={{ duration: 500 }}
+					class="absolute bottom-[33.5%] left-[28%] flex h-[17%] w-[18.25%] items-center justify-center rounded bg-stone-300/70 p-2 sm:text-base"
+				>
+					<div class="text-sm sm:text-lg md:text-xl">
+						{piData.cpuUsage}%
+					</div>
+				</div>
+			{/if}
+			{#if piData?.diskUsage !== null}
+				<div
+					in:fade={{ duration: 500 }}
+					class="absolute right-[28.25%] top-[26.75%] flex h-[20%] w-[13%] items-center justify-center rounded bg-zinc-800/80 p-2 text-white"
+				>
+					<div class="scale-75 text-xs sm:scale-100 sm:text-base">
+						{piData.diskUsage}%
+					</div>
+				</div>
+			{/if}
+		</div>
+
+		<!-- {#if stuff} -->
+
+		<!-- <div class="mx-auto my-5 max-w-md">
 		<div class="flex items-center gap-2">
 			{#if stuff}
 				<div class="h-5 w-5 rounded-full bg-emerald-500"></div>
@@ -216,18 +220,48 @@
 			<div>engage-dev api</div>
 		</div>
 	</div> -->
-</div>
 
-<div class="relative h-screen w-full bg-neutral-900 text-white">
-	<div class="mx-auto flex h-full w-full max-w-md items-center justify-center px-5">
-		<div class="flex flex-col items-center gap-5">
-			<div class="text-5xl md:text-7xl">hello world</div>
-			<img src={raspberrypi2} alt="raspberrypi2" class="w-full" />
+		<div class="mt-5 overflow-x-auto">
+			<table class="table-sm table">
+				<!-- head -->
+				<!-- <thead> -->
+				<!-- <tr> -->
+				<!-- <th>Name</th> -->
+				<!-- <th>Job</th> -->
+				<!-- <th>Favorite Color</th> -->
+				<!-- </tr> -->
+				<!-- </thead> -->
+				<tbody class="w-full">
+					<!-- row 1 -->
+					<tr class="w-full">
+						<td class="w-1/3">Host:</td>
+						<td class="w-1/3">{piData?.hostname}</td>
+					</tr>
+					<!-- row 2 -->
+					<tr class="w-full">
+						<td class="w-1/3">OS:</td>
+						<td class="w-1/3">{piData?.os}</td>
+					</tr>
+					<!-- row 3 -->
+					<tr class="w-full">
+						<td class="w-1/3">Uptime:</td>
+						<td class="w-1/3">{piData.uptime}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<div class="absolute bottom-5 flex w-full justify-center text-white">
-		<a href={PUBLIC_GITHUB_URL} class="text-white underline">@engageintellect</a>
+
+	<div class="relative h-full min-h-screen w-full bg-neutral-900 text-white">
+		<div class="mx-auto flex h-full w-full max-w-md items-center justify-center px-5">
+			<div class="flex flex-col items-center gap-5">
+				<div class="text-5xl md:text-7xl">hello world</div>
+				<img src={raspberrypi2} alt="raspberrypi2" class="w-full" />
+			</div>
+		</div>
+		<div class="absolute bottom-5 flex w-full justify-center text-white">
+			<a href={PUBLIC_GITHUB_URL} class="text-white underline">@engageintellect</a>
+		</div>
 	</div>
 </div>
-
 <!-- {JSON.stringify(piData)} -->

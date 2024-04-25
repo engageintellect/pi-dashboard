@@ -13,9 +13,9 @@ def get_hostname():
     return subprocess.getoutput("cat /etc/hostname")
 
 
-# @app.get("/api/os")
-# def get_os():
-#     return subprocess.getoutput("cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2 | tr -d '\"'")
+@app.get("/api/os")
+def get_os():
+    return subprocess.getoutput("cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2 | tr -d '\"'")
 
 
 @app.get("/api/uptime")
@@ -165,7 +165,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = {
                 "hostname": get_hostname(),
-                # "os": get_os(),
+                "os": get_os(),
                 "uptime": get_uptime(),
                 "memoryUsed": get_used_ram(),
                 "memoryAvailable": get_available_ram(),
