@@ -117,32 +117,41 @@
 
 <div class="flex flex-col">
 	<div class="mx-auto h-full min-h-screen w-full max-w-2xl p-4">
-		<div class="mx-auto flex max-w-md flex-col items-center gap-5">
+		<div class="mx-auto flex w-full flex-col items-center gap-5 px-2">
 			<div class="text-9xl">pi</div>
 			<div>
 				read the <a class="text-blue-500 underline" href={PUBLIC_GITHUB_URL}>docs</a> for more info.
 			</div>
 			<div class="mx-auto my-5 flex w-full gap-2">
 				<a
-					href="/"
-					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
+					href="/#services"
+					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
-					<div>home</div>
-					<Icon icon="mdi:home" class="h-7 w-7" />
+					<div>services</div>
+					<Icon
+						icon="mdi:home"
+						class="h-7 w-7 transition-all duration-200 sm:group-hover:scale-110"
+					/>
 				</a>
 				<a
 					href={PUBLIC_POCKETBASE_URL}
-					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
+					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>db</div>
-					<Icon icon="simple-icons:pocketbase" class="h-7 w-7" />
+					<Icon
+						icon="simple-icons:pocketbase"
+						class="h-7 w-7 transition-all duration-200 sm:group-hover:scale-110"
+					/>
 				</a>
 				<a
 					href={PUBLIC_API_URL}
-					class="flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
+					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>api</div>
-					<Icon icon="mynaui:api" class="h-7 w-7" />
+					<Icon
+						icon="mynaui:api"
+						class="h-7 w-7 transition-all duration-200 sm:group-hover:scale-110"
+					/>
 				</a>
 			</div>
 		</div>
@@ -173,17 +182,17 @@
 					class="absolute left-[29.75%] top-[21%] flex h-[17%] w-[15%] items-center justify-center rounded bg-zinc-800/50 p-2 text-white"
 				>
 					<div class="text-xs sm:text-xl">
-						{piData.memoryUsed}%
+						{piData.memoryUsed + '%' || 'loading...'}
 					</div>
 				</div>
 			{/if}
 			{#if piData?.cpuUsage !== null}
 				<div
 					in:fade={{ duration: 500 }}
-					class="absolute bottom-[33.5%] left-[28%] flex h-[17%] w-[18.25%] items-center justify-center rounded bg-stone-300/70 p-2 sm:text-base"
+					class="absolute bottom-[33.5%] left-[28%] flex h-[17%] w-[18.25%] items-center justify-center rounded bg-stone-300/80 p-2 sm:text-base"
 				>
 					<div class="text-sm sm:text-lg md:text-xl">
-						{piData.cpuUsage}%
+						{piData.cpuUsage + '%' || 'loading...'}
 					</div>
 				</div>
 			{/if}
@@ -193,7 +202,7 @@
 					class="absolute right-[28.25%] top-[26.75%] flex h-[20%] w-[13%] items-center justify-center rounded bg-zinc-800/80 p-2 text-white"
 				>
 					<div class="scale-75 text-xs sm:scale-100 sm:text-base">
-						{piData.diskUsage}%
+						{piData.diskUsage + '%' || 'loading...'}
 					</div>
 				</div>
 			{/if}
@@ -220,47 +229,58 @@
 			<div>engage-dev api</div>
 		</div>
 	</div> -->
-
-		<div class="mt-5 overflow-x-auto">
-			<table class="table-sm table">
-				<!-- head -->
-				<!-- <thead> -->
-				<!-- <tr> -->
-				<!-- <th>Name</th> -->
-				<!-- <th>Job</th> -->
-				<!-- <th>Favorite Color</th> -->
-				<!-- </tr> -->
-				<!-- </thead> -->
-				<tbody class="w-full">
-					<!-- row 1 -->
-					<tr class="w-full">
-						<td class="w-1/3">Host:</td>
-						<td class="w-1/3">{piData?.hostname}</td>
-					</tr>
-					<!-- row 2 -->
-					<tr class="w-full">
-						<td class="w-1/3">OS:</td>
-						<td class="w-1/3">{piData?.os}</td>
-					</tr>
-					<!-- row 3 -->
-					<tr class="w-full">
-						<td class="w-1/3">Uptime:</td>
-						<td class="w-1/3">{piData.uptime}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
 	</div>
 
-	<div class="relative h-full min-h-screen w-full bg-neutral-900 text-white">
-		<div class="mx-auto flex h-full w-full max-w-md items-center justify-center px-5">
-			<div class="flex flex-col items-center gap-5">
-				<div class="text-5xl md:text-7xl">hello world</div>
-				<img src={raspberrypi2} alt="raspberrypi2" class="w-full" />
+	<div id="services" class="flex h-full min-h-screen w-full items-center bg-neutral-900 text-white">
+		<div class="mx-auto w-full max-w-2xl grow p-5 py-10">
+			<div class="flex w-full flex-col gap-10 overflow-x-auto md:flex-row md:gap-20">
+				{#if piData.packageCount !== null}
+					<div class="w-full" in:fade={{ duration: 500 }}>
+						<div class=" mb-5 text-3xl">system info</div>
+						<table class="table-sm table">
+							<tbody class="w-full">
+								<tr class="w-full border-none">
+									<td class="w-1/2">Uptime:</td>
+									<td class="w-1/2">{piData.uptime}</td>
+								</tr>
+
+								<tr class="w-full border-none">
+									<td class="w-1/2">Host:</td>
+									<td class="w-1/2">{piData?.hostname}</td>
+								</tr>
+								<tr class="w-full border-none">
+									<td class="w-1/2">OS:</td>
+									<td class="w-1/2">{piData?.os}</td>
+								</tr>
+
+								<tr class="w-full border-none">
+									<td class="w-1/2">Packages:</td>
+									<td class="w-1/2">{piData?.packageCount}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				{/if}
+
+				<div class=" flex w-full flex-col gap-5">
+					<!-- <img src={raspberrypi2} alt="raspberrypi2" class="w-full" /> -->
+
+					{#if piData.runningServices}
+						<div class="w-full" in:fade={{ duration: 500 }}>
+							<div class=" mb-5 text-3xl">running services</div>
+							<table class="table-sm table">
+								<tbody class="w-full">
+									{#each piData.runningServices as service}
+										<tr class="w-full border-none">
+											<td class="w-full">{service}</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+					{/if}
+				</div>
 			</div>
-		</div>
-		<div class="absolute bottom-5 flex w-full justify-center text-white">
-			<a href={PUBLIC_GITHUB_URL} class="text-white underline">@engageintellect</a>
 		</div>
 	</div>
 </div>

@@ -67,10 +67,10 @@ def get_package_count():
     return subprocess.getoutput(command)
 
 
-# @app.get("/api/updates")
-# def get_updates(interface="eth0"):
-#     command = f"sudo apt update > /dev/null 2>&1 && apt list --upgradable 2>/dev/null | grep -v Listing | wc -l"
-#     return subprocess.getoutput(command)
+@app.get("/api/updates")
+def get_updates():
+    command = f"sudo sh -c 'pacman -Syq --noconfirm > /dev/null 2>&1 && pacman -Quq 2> /dev/null | wc -l'"
+    return subprocess.getoutput(command)
 
 
 # @app.get("/api/updatable-packages")
@@ -173,7 +173,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 "diskUsage": get_disk_usage(),
                 "systemLoad": get_load(),
                 "packageCount": get_package_count(),
-                # "updates": get_updates(),
+                "updates": get_updates(),
                 # "updatablePackages": get_updatable_packages(),
                 # "networkUsage": get_network_usage(),
                 "networkLatency": get_network_latency(),
