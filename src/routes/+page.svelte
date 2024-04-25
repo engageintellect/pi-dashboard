@@ -1,5 +1,5 @@
 <script lang="ts">
-	import raspberryPi from '$lib/assets/images/raspberrypi.webp';
+	import raspberryPi from '$lib/assets/images/raspberrypi.png';
 </script>
 
 <div class="mx-auto max-w-2xl">
