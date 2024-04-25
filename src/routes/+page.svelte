@@ -24,6 +24,10 @@
 	</div>
 
 	<div class="flex w-full">
-		<img src={raspberryPi} alt="Raspberry Pi" class="w-full" />
+		<img
+			src="https://cdn3.botland.store/121185/raspberry-pi-5-4gb-.jpg"
+			alt="Raspberry Pi"
+			class="w-full"
+		/>
 	</div>
 </div>
