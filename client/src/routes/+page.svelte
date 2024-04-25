@@ -27,6 +27,7 @@
 		| 'diskUsage'
 		| 'systemLoad'
 		| 'packageCount'
+		| 'updates'
 		| 'runningProcesses'
 		| 'networkLatency'
 		| 'networkPorts'
@@ -42,6 +43,7 @@
 		diskUsage: '/api/pi/disk/usage',
 		systemLoad: '/api/pi/load',
 		packageCount: '/api/pi/package-count',
+		updates: '/api/pi/updates',
 		runningProcesses: '/api/pi/processes',
 		networkLatency: '/api/pi/network/latency',
 		networkPorts: '/api/pi/network/ports',
@@ -58,6 +60,7 @@
 		diskUsage: null,
 		systemLoad: null,
 		packageCount: null,
+		updates: null,
 		runningProcesses: null,
 		networkLatency: null,
 		networkPorts: null,
@@ -113,6 +116,10 @@
 			ws.close();
 		}
 	});
+
+	const shortenFloat = (num: number) => {
+		return num.toFixed(0);
+	};
 </script>
 
 <div class="flex flex-col">
@@ -129,7 +136,7 @@
 				>
 					<div>services</div>
 					<Icon
-						icon="mdi:home"
+						icon="mdi:server"
 						class="h-7 w-7 transition-all duration-200 sm:group-hover:scale-110"
 					/>
 				</a>
@@ -144,7 +151,7 @@
 					/>
 				</a>
 				<a
-					href={PUBLIC_API_URL}
+					href={'/api'}
 					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>api</div>
@@ -166,7 +173,7 @@
 				>
 					<!-- {piData.networkPorts} -->
 					<div
-						class="flex h-full w-full scale-75 flex-col items-start text-xs sm:scale-100 sm:text-sm"
+						class="flex h-full w-full scale-75 flex-col items-start justify-start text-xs sm:scale-100 sm:text-sm"
 					>
 						{#each piData.networkPorts as port}
 							<div class="drop-shadow">
@@ -181,7 +188,7 @@
 					in:fade={{ duration: 500 }}
 					class="absolute left-[29.75%] top-[21%] flex h-[17%] w-[15%] items-center justify-center rounded bg-zinc-800/50 p-2 text-white"
 				>
-					<div class="text-xs sm:text-xl">
+					<div class="text-sm sm:text-xl">
 						{piData.memoryUsed + '%' || 'loading...'}
 					</div>
 				</div>
@@ -201,8 +208,8 @@
 					in:fade={{ duration: 500 }}
 					class="absolute right-[28.25%] top-[26.75%] flex h-[20%] w-[13%] items-center justify-center rounded bg-zinc-800/80 p-2 text-white"
 				>
-					<div class="scale-75 text-xs sm:scale-100 sm:text-base">
-						{piData.diskUsage + '%' || 'loading...'}
+					<div class="text-sm sm:text-base md:text-lg lg:text-xl">
+						{Math.floor(piData.diskUsage) + '%' || 'loading...'}
 					</div>
 				</div>
 			{/if}
@@ -231,10 +238,13 @@
 	</div> -->
 	</div>
 
-	<div id="services" class="flex h-full min-h-screen w-full items-center bg-neutral-900 text-white">
-		<div class="mx-auto w-full max-w-2xl grow p-5 py-10">
-			<div class="flex w-full flex-col gap-10 overflow-x-auto md:flex-row md:gap-20">
-				{#if piData.packageCount !== null}
+	{#if piData.packageCount !== null}
+		<div
+			id="services"
+			class="flex h-full min-h-screen w-full items-center bg-neutral-900 text-white"
+		>
+			<div class="mx-auto w-full max-w-2xl grow p-5 py-10">
+				<div class="flex w-full flex-col gap-10 overflow-x-auto md:flex-row md:gap-20">
 					<div class="w-full" in:fade={{ duration: 500 }}>
 						<div class=" mb-5 text-3xl">system info</div>
 						<table class="table-sm table">
@@ -257,31 +267,43 @@
 									<td class="w-1/2">Packages:</td>
 									<td class="w-1/2">{piData?.packageCount}</td>
 								</tr>
+
+								<tr class="w-full border-none">
+									<td class="w-1/2">Updates:</td>
+									<td class="w-1/2">{piData?.updates || 'Searching...'}</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
-				{/if}
 
-				<div class=" flex w-full flex-col gap-5">
-					<!-- <img src={raspberrypi2} alt="raspberrypi2" class="w-full" /> -->
+					<div class=" flex w-full flex-col gap-5">
+						<!-- <img src={raspberrypi2} alt="raspberrypi2" class="w-full" /> -->
 
-					{#if piData.runningServices}
-						<div class="w-full" in:fade={{ duration: 500 }}>
-							<div class=" mb-5 text-3xl">running services</div>
-							<table class="table-sm table">
-								<tbody class="w-full">
-									{#each piData.runningServices as service}
-										<tr class="w-full border-none">
-											<td class="w-full">{service}</td>
-										</tr>
-									{/each}
-								</tbody>
-							</table>
-						</div>
-					{/if}
+						{#if piData.runningServices}
+							<div class="w-full" in:fade={{ duration: 500 }}>
+								<div class=" mb-5 text-3xl">running services</div>
+								<table class="table-sm table">
+									<tbody class="w-full">
+										{#each piData.runningServices as service}
+											<tr class="w-full border-none">
+												<td class="flex w-full items-center gap-2">
+													<div
+														class="h-5 w-5 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-700"
+													></div>
+													<div>
+														{service}
+													</div>
+												</td>
+											</tr>
+										{/each}
+									</tbody>
+								</table>
+							</div>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 <!-- {JSON.stringify(piData)} -->
