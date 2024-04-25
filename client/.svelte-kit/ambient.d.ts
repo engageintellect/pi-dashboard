@@ -130,6 +130,7 @@ declare module '$env/static/private' {
  */
 declare module '$env/static/public' {
 	export const PUBLIC_GITHUB_URL: string;
+	export const PUBLIC_GITHUB_REPO: string;
 	export const PUBLIC_BASE_URL: string;
 	export const PUBLIC_API_URL: string;
 	export const PUBLIC_POCKETBASE_URL: string;
@@ -263,6 +264,7 @@ declare module '$env/dynamic/private' {
 declare module '$env/dynamic/public' {
 	export const env: {
 		PUBLIC_GITHUB_URL: string;
+		PUBLIC_GITHUB_REPO: string;
 		PUBLIC_BASE_URL: string;
 		PUBLIC_API_URL: string;
 		PUBLIC_POCKETBASE_URL: string;
