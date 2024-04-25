@@ -133,6 +133,7 @@ declare module '$env/static/public' {
 	export const PUBLIC_BASE_URL: string;
 	export const PUBLIC_API_URL: string;
 	export const PUBLIC_POCKETBASE_URL: string;
+	export const PUBLIC_WEB_SOCKET_URL: string;
 }
 
 /**
@@ -265,6 +266,7 @@ declare module '$env/dynamic/public' {
 		PUBLIC_BASE_URL: string;
 		PUBLIC_API_URL: string;
 		PUBLIC_POCKETBASE_URL: string;
+		PUBLIC_WEB_SOCKET_URL: string;
 		[key: `PUBLIC_${string}`]: string | undefined;
 	}
 }

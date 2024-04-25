@@ -7,17 +7,15 @@ import os
 
 app = FastAPI()
 
-GLANCES_ENDPOINT = "https://engage-dev.com/glances/api/3"
-
 
 @app.get("/api/hostname")
 def get_hostname():
     return subprocess.getoutput("cat /etc/hostname")
 
 
-@app.get("/api/os")
-def get_os():
-    return subprocess.getoutput("cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2 | tr -d '\"'")
+# @app.get("/api/os")
+# def get_os():
+#     return subprocess.getoutput("cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2 | tr -d '\"'")
 
 
 @app.get("/api/uptime")
@@ -47,8 +45,6 @@ def get_disk_usage():
 
 @app.get("/api/load")
 def get_load():
-    # load = requests.get(f'{GLANCES_ENDPOINT}/load')
-    # return load.json()
     with open('/proc/loadavg', 'r') as file:
         load_data = file.readline().split()
 
@@ -71,32 +67,31 @@ def get_package_count():
     return subprocess.getoutput(command)
 
 
-@app.get("/api/updates")
-def get_updates(interface="eth0"):
-    command = f"sudo apt update > /dev/null 2>&1 && apt list --upgradable 2>/dev/null | grep -v Listing | wc -l"
-    return subprocess.getoutput(command)
+# @app.get("/api/updates")
+# def get_updates(interface="eth0"):
+#     command = f"sudo apt update > /dev/null 2>&1 && apt list --upgradable 2>/dev/null | grep -v Listing | wc -l"
+#     return subprocess.getoutput(command)
 
 
-@app.get("/api/updatable-packages")
-def get_updatable_packages():
-    # Redirect stderr to /dev/null to hide warnings
-    command = 'sudo apt list --upgradable 2>/dev/null'
-    output = subprocess.getoutput(command)
-    upgradable_packages = [line for line in output.split(
-        '\n') if 'upgradable from' in line]
-    package_list = [line.split()[0] for line in upgradable_packages]
-    return package_list
+# @app.get("/api/updatable-packages")
+# def get_updatable_packages():
+#     command = 'sudo apt list --upgradable 2>/dev/null'
+#     output = subprocess.getoutput(command)
+#     upgradable_packages = [line for line in output.split(
+#         '\n') if 'upgradable from' in line]
+#     package_list = [line.split()[0] for line in upgradable_packages]
+#     return package_list
 
 
-@app.get("/api/network/usage")
-def get_network_usage(interface="eth0"):
-    received_command = f"ifconfig {
-        interface} | grep 'RX packets' | awk '{{printf \"%.2f\\n\", $5/1024/1024}}'"
-    sent_command = f"ifconfig {
-        interface} | grep 'TX packets' | awk '{{printf \"%.2f\\n\", $5/1024/1024}}'"
-    received = subprocess.getoutput(received_command)
-    sent = subprocess.getoutput(sent_command)
-    return {"received": received, "sent": sent}
+# @app.get("/api/network/usage")
+# def get_network_usage(interface="lo"):
+#     received_command = f"ifconfig {
+#         interface} | grep 'RX packets' | awk '{{printf \"%.2f\\n\", $5/1024/1024}}'"
+#     sent_command = f"ifconfig {
+#         interface} | grep 'TX packets' | awk '{{printf \"%.2f\\n\", $5/1024/1024}}'"
+#     received = subprocess.getoutput(received_command)
+#     sent = subprocess.getoutput(sent_command)
+#     return {"received": received, "sent": sent}
 
 
 @app.get("/api/network/latency")
@@ -170,7 +165,7 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = {
                 "hostname": get_hostname(),
-                "os": get_os(),
+                # "os": get_os(),
                 "uptime": get_uptime(),
                 "memoryUsed": get_used_ram(),
                 "memoryAvailable": get_available_ram(),
@@ -178,9 +173,9 @@ async def websocket_endpoint(websocket: WebSocket):
                 "diskUsage": get_disk_usage(),
                 "systemLoad": get_load(),
                 "packageCount": get_package_count(),
-                "updates": get_updates(),
-                "updatablePackages": get_updatable_packages(),
-                "networkUsage": get_network_usage(),
+                # "updates": get_updates(),
+                # "updatablePackages": get_updatable_packages(),
+                # "networkUsage": get_network_usage(),
                 "networkLatency": get_network_latency(),
                 "networkPorts": get_open_ports(),
                 "runningServices": get_running_services(),
