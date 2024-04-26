@@ -255,7 +255,7 @@
 								</tr>
 
 								<tr class="w-full border-none">
-									<td class="w-1/2">Host:</td>
+									<td class="w-1/2">Hostname:</td>
 									<td class="w-1/2">{piData?.hostname}</td>
 								</tr>
 								<tr class="w-full border-none">
@@ -270,7 +270,13 @@
 
 								<tr class="w-full border-none">
 									<td class="w-1/2">Updates:</td>
-									<td class="w-1/2">{piData?.updates || 'Searching...'}</td>
+									{#if piData.updates > 0}
+										<td class="badge badge-success w-1/2 font-bold"
+											>{piData?.updates || 'Searching...'}</td
+										>
+									{:else}
+										<td class="w-1/2">{piData?.updates || 'Searching...'}</td>
+									{/if}
 								</tr>
 							</tbody>
 						</table>
@@ -288,7 +294,7 @@
 											<tr class="w-full border-none">
 												<td class="flex w-full items-center gap-2">
 													<div
-														class="h-5 w-5 rounded-full bg-gradient-to-b from-emerald-500 to-emerald-700"
+														class="from-success h-5 w-5 rounded-full bg-gradient-to-b to-emerald-700"
 													></div>
 													<div>
 														{service}
