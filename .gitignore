@@ -10,4 +10,4 @@ vite.config.ts.timestamp-*
 venv/
 venv*/
 /client/.svelte-kit
-/build
+/build/
