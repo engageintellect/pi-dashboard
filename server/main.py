@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
+from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, HTTPException
 import subprocess
 import uvicorn
 import asyncio
 import os
 
+load_dotenv()
+
 app = FastAPI()
+
+package_manager = os.getenv("PACKAGE_MANAGER")
 
 
 @app.get("/api/hostname")
@@ -69,7 +74,11 @@ def get_package_count():
 
 @app.get("/api/updates")
 def get_updates():
-    command = f"sudo sh -c 'pacman -Syq --noconfirm > /dev/null 2>&1 && pacman -Quq 2> /dev/null | wc -l'"
+    if package_manager == "apt":
+        command = f"sudo apt update > /dev/null 2>&1 && apt list --upgradable 2>/dev/null | grep -v Listing | wc -l"
+
+    if package_manager == "pacman":
+        command = f"sudo sh -c 'pacman -Syq --noconfirm > /dev/null 2>&1 && pacman -Quq 2> /dev/null | wc -l'"
     return subprocess.getoutput(command)
 
 
