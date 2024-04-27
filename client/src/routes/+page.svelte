@@ -270,10 +270,17 @@
 
 								<tr class="w-full border-none">
 									<td class="w-1/2">Updates:</td>
+
 									{#if piData.updates > 0}
-										<td class="badge badge-success w-1/2 font-bold"
-											>{piData?.updates || 'Searching...'}</td
+										<td
+											in:fade={{ duration: 500 }}
+											class="bg-success text-success-content w-1/2 rounded font-bold"
 										>
+											<div class="flex items-center justify-between">
+												{piData?.updates || 'Searching...'}
+												<Icon icon="material-symbols-light:package-2-outline" class="h-7 w-7" />
+											</div>
+										</td>
 									{:else}
 										<td class="w-1/2">{piData?.updates || 'Searching...'}</td>
 									{/if}
@@ -294,7 +301,7 @@
 											<tr class="w-full border-none">
 												<td class="flex w-full items-center gap-2">
 													<div
-														class="from-success h-5 w-5 rounded-full bg-gradient-to-b to-emerald-700"
+														class="from-success h-4 w-4 rounded-full bg-gradient-to-b to-emerald-700"
 													></div>
 													<div>
 														{service}
