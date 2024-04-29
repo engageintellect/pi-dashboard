@@ -9,6 +9,5 @@ export const load: PageServerLoad = async () => {
 		throw error(500, 'Failed to fetch data from the API');
 	}
 
-		console.log('no error', json);
 	return { json };
 };
