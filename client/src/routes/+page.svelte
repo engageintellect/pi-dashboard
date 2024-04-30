@@ -10,6 +10,7 @@
 	// export let data: PageData;
 	import {
 		PUBLIC_GITHUB_URL,
+		PUBLIC_GITHUB_REPO,
 		PUBLIC_POCKETBASE_URL,
 		PUBLIC_API_URL,
 		PUBLIC_WEB_SOCKET_URL
@@ -123,15 +124,16 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="mx-auto h-full min-h-screen w-full max-w-2xl p-4">
+	<div class="mx-auto h-full min-h-screen w-full max-w-2xl overscroll-none p-4">
 		<div class="mx-auto flex w-full flex-col items-center gap-5 px-2">
 			<div class="text-9xl">pi</div>
+
 			<div>
-				read the <a class="text-blue-500 underline" href={PUBLIC_GITHUB_URL}>docs</a> for more info.
+				read the <a class="text-blue-500 underline" href={PUBLIC_GITHUB_REPO}>docs</a> for more info.
 			</div>
 			<div class="mx-auto my-5 flex w-full gap-2">
 				<a
-					href="/#services"
+					href="#services"
 					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>services</div>
@@ -142,6 +144,7 @@
 				</a>
 				<a
 					href={PUBLIC_POCKETBASE_URL}
+					target="_blank"
 					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>db</div>
@@ -152,6 +155,7 @@
 				</a>
 				<a
 					href={'/api'}
+					target="_blank"
 					class="group flex w-full items-center justify-between gap-2 rounded bg-neutral-900 px-4 py-2 text-white"
 				>
 					<div>api</div>
@@ -164,7 +168,27 @@
 		</div>
 
 		<div class="relative">
-			<img src={raspberrypi} alt="raspberrypi" class="w-full drop-shadow-lg" />
+			{#if !piData?.systemLoad}
+				<div class="relative h-full w-full">
+					<img
+						src={raspberrypi}
+						alt="raspberrypi"
+						class=" w-full opacity-50 drop-shadow-lg saturate-[50%]"
+					/>
+					<div class="absolute top-0 flex h-full w-full items-center justify-center">
+						<div class="flex flex-col items-center justify-center">
+							<div class="loading loading-spinner loading-lg scale-[200%]"></div>
+						</div>
+					</div>
+				</div>
+			{:else}
+				<img
+					in:fade={{ duration: 500 }}
+					src={raspberrypi}
+					alt="raspberrypi"
+					class="w-full drop-shadow-lg saturate-[125%]"
+				/>
+			{/if}
 
 			{#if piData?.networkPorts !== null}
 				<div
@@ -188,7 +212,7 @@
 					in:fade={{ duration: 500 }}
 					class="absolute left-[29.75%] top-[21%] flex h-[17%] w-[15%] items-center justify-center rounded bg-zinc-800/50 p-2 text-white"
 				>
-					<div class="text-sm sm:text-xl">
+					<div class="avatar text-sm sm:text-xl">
 						{piData.memoryUsed + '%' || 'loading...'}
 					</div>
 				</div>
@@ -215,6 +239,21 @@
 			{/if}
 		</div>
 
+		{#if piData?.systemLoad}
+			<div class="flex items-center justify-center gap-2 pt-2">
+				<div>
+					<Icon icon="material-symbols:arrow-upward" class="h-5 w-5 animate-bounce" />
+				</div>
+
+				<div class="text-xs">
+					this website, database, and API endpoints are hosted on this raspberry pi.
+				</div>
+			</div>
+		{:else}
+			<div class="flex items-center justify-center">
+				connecting to raspberry pi<span class="animate-pulse">...</span>
+			</div>
+		{/if}
 		<!-- {#if stuff} -->
 
 		<!-- <div class="mx-auto my-5 max-w-md">
@@ -295,22 +334,26 @@
 						{#if piData.runningServices}
 							<div class="w-full" in:fade={{ duration: 500 }}>
 								<div class=" mb-5 text-3xl">running services</div>
-								<table class="table-sm table">
-									<tbody class="w-full">
-										{#each piData.runningServices as service}
-											<tr class="w-full border-none">
-												<td class="flex w-full items-center gap-2">
-													<div
-														class="from-success h-4 w-4 rounded-full bg-gradient-to-b to-emerald-700"
-													></div>
-													<div>
-														{service}
-													</div>
-												</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
+								<div class="h-80 overscroll-auto">
+									<div class="border-base-300 h-80 overflow-scroll rounded border">
+										<table class="table-sm table">
+											<tbody class="w-full">
+												{#each piData.runningServices as service}
+													<tr class="w-full border-none">
+														<td class="flex w-full items-center gap-2">
+															<div
+																class="from-success h-4 w-4 rounded-full bg-gradient-to-b to-emerald-700"
+															></div>
+															<div>
+																{service}
+															</div>
+														</td>
+													</tr>
+												{/each}
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						{/if}
 					</div>

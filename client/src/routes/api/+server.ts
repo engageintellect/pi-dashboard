@@ -9,7 +9,6 @@ export const GET: RequestHandler = async () => {
 	// } else {
 		const data = {
 			message: 'hello from sveltekit server',
-			os: 'arch linux',
 		};
 		return new Response(JSON.stringify(data), {
 			headers: { 'content-type': 'application/json' }

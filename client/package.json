@@ -1,9 +1,9 @@
 {
-	"name": "pi-server-homepage",
+	"name": "pi-dashboard",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host --port 3000",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "npm run test:integration && npm run test:unit",
