@@ -181,6 +181,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 "hostname": get_hostname(),
                 "os": get_os(),
                 "uptime": get_uptime(),
+                "temp": get_temp(),
                 "memoryUsed": get_used_ram(),
                 "memoryAvailable": get_available_ram(),
                 "cpuUsage": get_cpu_usage(),
