@@ -22,6 +22,7 @@
 		| 'hostname'
 		| 'os'
 		| 'uptime'
+		| 'temp'
 		| 'memoryUsed'
 		| 'memoryAvailable'
 		| 'cpuUsage'
@@ -38,6 +39,7 @@
 		hostname: '/api/pi/hostname',
 		os: '/api/pi/os',
 		uptime: '/api/pi/uptime',
+		temp: '/api/pi/temp',
 		memoryUsed: '/api/pi/memory/used',
 		memoryAvailable: '/api/pi/memory/available',
 		cpuUsage: '/api/pi/cpu/usage',
@@ -55,6 +57,7 @@
 		hostname: null,
 		os: null,
 		uptime: null,
+		temp: null,
 		memoryUsed: null,
 		memoryAvailable: null,
 		cpuUsage: null,
@@ -300,6 +303,11 @@
 								<tr class="w-full border-none">
 									<td class="w-1/2">OS:</td>
 									<td class="w-1/2">{piData?.os}</td>
+								</tr>
+
+								<tr class="w-full border-none">
+									<td class="w-1/2">Temp:</td>
+									<td class="w-1/2">{piData?.temp}</td>
 								</tr>
 
 								<tr class="w-full border-none">
