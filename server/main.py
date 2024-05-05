@@ -27,12 +27,10 @@ def get_os():
 def get_uptime():
     return subprocess.getoutput("uptime -p | sed 's/up //'").split(',')
 
-
 @app.get("/api/temp")
 def get_temp():
     output = subprocess.getoutput("cat /sys/class/thermal/thermal_zone0/temp | awk '{printf \"%.2f°F\\n\", $1/1000 * 9/5 + 32}'")
-    return {output.strip()}
-
+    return output.strip()
 
 @app.get("/api/memory/used")
 def get_used_ram():
