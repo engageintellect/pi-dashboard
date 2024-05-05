@@ -30,8 +30,7 @@ def get_uptime():
 
 @app.get("/api/temp")
 def get_temp():
-    output = subprocess.getoutput("cat /sys/class/thermal/thermal_zone0/temp | awk '{printf \"%.2f°F\n\", $1/1000 * 9/5 + 32}'")
-    return {"temperature": output.strip()}
+    return subprocess.getoutput("cat /sys/class/thermal/thermal_zone0/temp | awk '{printf \"%.2f°F\n\", $1/1000 * 9/5 + 32}'")
 
 
 @app.get("/api/memory/used")
