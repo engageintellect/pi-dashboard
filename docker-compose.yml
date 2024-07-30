@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  sveltekit-app:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.sveltekit
+    container_name: sveltekit-app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./client:/app
+    ports:
+      - "3000:3000"
+
+        #  nginx:
+        #image: nginx:latest
+        #container_name: nginx
+        #volumes:
+        #- ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        #- /etc/letsencrypt:/etc/letsencrypt
+        #ports:
+        #- "80:80"
+        #- "443:443"
+        #depends_on:
+        #- sveltekit-app
+    restart: always
+

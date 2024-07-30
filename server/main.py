@@ -72,7 +72,7 @@ def get_load():
 
 @app.get("/api/package-count")
 def get_package_count():
-    command = "neofetch | grep Packages | awk '{print $2}'"
+    command = "dpkg -l | grep '^ii' | wc -l"
     return subprocess.getoutput(command)
 
 
